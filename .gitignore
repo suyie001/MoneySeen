@@ -1,0 +1,16 @@
+.dart_tool/
+.idea/
+.melos_tool/
+.vscode/
+build/
+coverage/
+*.iml
+*.log
+.env
+.env.*
+!.env.example
+**/DerivedData/
+**/xcuserdata/
+**/android/key.properties
+**/*.jks
+**/*.keystore

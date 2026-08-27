@@ -1,0 +1,53 @@
+name: moneyseen_workspace
+description: MoneySeen monorepo workspace.
+publish_to: none
+
+environment:
+  sdk: ^3.13.1
+
+workspace:
+  - apps/moneyseen_app
+  - services/api
+  - packages/moneyseen_api_contracts
+  - packages/moneyseen_classification
+  - packages/moneyseen_database
+  - packages/moneyseen_domain
+  - packages/moneyseen_importers
+  - packages/moneyseen_reports
+  - packages/moneyseen_sync
+  - packages/moneyseen_ui
+
+dev_dependencies:
+  melos: ^7.3.0
+
+melos:
+  command:
+    bootstrap:
+      runPubGetInParallel: false
+
+  scripts:
+    format:
+      run: dart format .
+      description: Format all Dart sources.
+
+    analyze:
+      run: flutter analyze
+      description: Analyze every workspace package.
+
+    test:
+      run: >-
+        dart run melos exec --concurrency=1 --fail-fast
+        --dir-exists=test --no-flutter -- dart test
+      description: Run pure Dart tests.
+
+    test:flutter:
+      run: >-
+        dart run melos exec --concurrency=1 --fail-fast
+        --dir-exists=test --flutter -- flutter test
+      description: Run Flutter tests.
+
+    generate:
+      run: >-
+        dart run melos exec --concurrency=1 --fail-fast
+        --depends-on=build_runner -- dart run build_runner build
+      description: Generate code for packages that use build_runner.

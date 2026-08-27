@@ -12,6 +12,8 @@ MoneySeen 是一款移动优先的跨平台个人账目分析应用。Flutter �
 
 代码将公开托管，并以同一套 Flutter 客户端发布 Web 版、App Store 版和 Google Play 版。详细技术设计见 [系统架构](docs/architecture.md)。
 
+开发环境、运行方式与质量检查见 [开发指南](docs/development.md)。
+
 第一版的目标不是成为完整的复式记账或资产管理软件，而是把“导出的支付流水”快速转化为可信、可探索的账目数据。
 
 ## 为什么做 MoneySeen

@@ -1,0 +1,20 @@
+name: moneyseen_classification
+description: Deterministic and AI-assisted MoneySeen classification pipeline.
+version: 0.1.0
+repository: https://github.com/suyie001/MoneySeen
+publish_to: none
+
+environment:
+  sdk: ^3.13.1
+
+resolution: workspace
+
+dependencies:
+  moneyseen_api_contracts:
+    path: ../moneyseen_api_contracts
+  moneyseen_domain:
+    path: ../moneyseen_domain
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6

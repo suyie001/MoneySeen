@@ -1,0 +1,24 @@
+name: moneyseen_database
+description: Cross-platform Drift database for MoneySeen.
+version: 0.1.0
+repository: https://github.com/suyie001/MoneySeen
+publish_to: none
+
+environment:
+  sdk: ^3.13.1
+  flutter: '>=3.47.0'
+
+resolution: workspace
+
+dependencies:
+  drift: ^2.34.3
+  drift_flutter: ^0.3.1
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  build_runner: ^2.16.0
+  drift_dev: ^2.34.5
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
