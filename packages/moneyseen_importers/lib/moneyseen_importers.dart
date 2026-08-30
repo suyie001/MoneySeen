@@ -1,5 +1,4 @@
 library;
 
 export 'src/statement_importer.dart';
-
-// TODO: Export any libraries intended for clients of this package.
+export 'src/wechat_pay_statement_importer.dart';

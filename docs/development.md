@@ -37,6 +37,9 @@ cd apps/moneyseen_app
 flutter run -d chrome
 ```
 
+运行后可从首页进入“导入微信账单”，选择微信支付导出的 `.xlsx` 文件。
+解析过程在设备本地完成；确认导入前不会写入数据库。重复判断优先使用微信交易单号。
+
 ### iOS
 
 ```bash

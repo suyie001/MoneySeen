@@ -15,6 +15,8 @@ final class StatementProbe {
     required this.supported,
     this.statementStartAt,
     this.statementEndAt,
+    this.recordCount,
+    this.accountLabel,
     this.message,
   });
 
@@ -22,6 +24,8 @@ final class StatementProbe {
   final bool supported;
   final DateTime? statementStartAt;
   final DateTime? statementEndAt;
+  final int? recordCount;
+  final String? accountLabel;
   final String? message;
 }
 
@@ -49,6 +53,8 @@ final class ImportTransactionCandidate extends ImportEvent {
     required this.counterparty,
     required this.description,
     required this.rawData,
+    required this.rawTransactionType,
+    this.status,
     this.sourceTransactionId,
   });
 
@@ -58,6 +64,8 @@ final class ImportTransactionCandidate extends ImportEvent {
   final String counterparty;
   final String description;
   final Map<String, Object?> rawData;
+  final String rawTransactionType;
+  final String? status;
   final String? sourceTransactionId;
 }
 

@@ -30,12 +30,16 @@ resolution: workspace
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  crypto: ^3.0.7
+  file_picker: ^12.1.1
   flutter:
     sdk: flutter
   moneyseen_database:
     path: ../../packages/moneyseen_database
   moneyseen_domain:
     path: ../../packages/moneyseen_domain
+  moneyseen_importers:
+    path: ../../packages/moneyseen_importers
   moneyseen_ui:
     path: ../../packages/moneyseen_ui
 

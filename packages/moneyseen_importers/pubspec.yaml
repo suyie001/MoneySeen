@@ -10,8 +10,10 @@ environment:
 resolution: workspace
 
 dependencies:
+  archive: ^4.2.0
   moneyseen_domain:
     path: ../moneyseen_domain
+  xml: ^7.0.1
 
 dev_dependencies:
   lints: ^6.0.0

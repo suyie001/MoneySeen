@@ -118,6 +118,113 @@ class MoneySeenDatabase extends _$MoneySeenDatabase {
     );
   }
 
+  Future<void> ensureDefaultAccount({
+    required String id,
+    required String ledgerId,
+    required String name,
+    required String type,
+    required String currency,
+    String? institution,
+  }) async {
+    final now = DateTime.now().toUtc();
+    await into(accountRows).insert(
+      AccountRowsCompanion.insert(
+        id: id,
+        ledgerId: ledgerId,
+        name: name,
+        type: type,
+        currency: currency,
+        institution: Value(institution),
+        createdAt: now,
+        updatedAt: now,
+      ),
+      mode: InsertMode.insertOrIgnore,
+    );
+  }
+
+  Future<Set<String>> existingDeduplicationKeys(Iterable<String> keys) async {
+    final keyList = keys.toSet().toList(growable: false);
+    if (keyList.isEmpty) return const {};
+    final result = <String>{};
+    for (var start = 0; start < keyList.length; start += 500) {
+      final end = start + 500 < keyList.length ? start + 500 : keyList.length;
+      final query = selectOnly(transactionRows)
+        ..addColumns([transactionRows.deduplicationKey])
+        ..where(
+          transactionRows.deduplicationKey.isIn(keyList.sublist(start, end)),
+        );
+      final rows = await query.get();
+      result.addAll(
+        rows
+            .map((row) => row.read(transactionRows.deduplicationKey))
+            .whereType<String>(),
+      );
+    }
+    return result;
+  }
+
+  Future<int> importTransactions({
+    required String batchId,
+    required String ledgerId,
+    required String accountId,
+    required String sourceType,
+    required String fileName,
+    required String fileHash,
+    required String parserVersion,
+    required List<StoredTransactionInput> entries,
+    DateTime? statementStartAt,
+    DateTime? statementEndAt,
+  }) => transaction(() async {
+    final now = DateTime.now().toUtc();
+    await into(importBatchRows).insert(
+      ImportBatchRowsCompanion.insert(
+        id: batchId,
+        accountId: accountId,
+        sourceType: sourceType,
+        fileName: fileName,
+        fileHash: fileHash,
+        statementStartAt: Value(statementStartAt),
+        statementEndAt: Value(statementEndAt),
+        importedAt: now,
+        parserVersion: parserVersion,
+        recordCount: Value(entries.length),
+      ),
+    );
+
+    var imported = 0;
+    for (final entry in entries) {
+      final rowCount = await into(transactionRows).insert(
+        TransactionRowsCompanion.insert(
+          id: entry.id,
+          ledgerId: ledgerId,
+          accountId: accountId,
+          importBatchId: batchId,
+          sourceType: sourceType,
+          sourceTransactionId: Value(entry.sourceTransactionId),
+          deduplicationKey: entry.deduplicationKey,
+          occurredAt: entry.occurredAt,
+          timezone: 'Asia/Shanghai',
+          rawDirection: entry.rawDirection,
+          nature: entry.nature,
+          amountMinor: entry.amountMinor,
+          currency: entry.currency,
+          rawCounterparty: entry.rawCounterparty,
+          description: entry.description,
+          rawTransactionType: entry.rawTransactionType,
+          status: Value(entry.status),
+          classificationStatus: 'pending',
+          classificationSource: 'none',
+          rawDataJson: entry.rawDataJson,
+          createdAt: now,
+          updatedAt: now,
+        ),
+        mode: InsertMode.insertOrIgnore,
+      );
+      if (rowCount > 0) imported++;
+    }
+    return imported;
+  });
+
   Stream<List<StoredLedger>> watchLedgers() {
     final query = select(ledgerRows)
       ..where((row) => row.isDeleted.equals(false))

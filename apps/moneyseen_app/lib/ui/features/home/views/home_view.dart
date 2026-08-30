@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:moneyseen_ui/moneyseen_ui.dart';
 
 import '../view_models/home_view_model.dart';
+import '../../import_statement/view_models/import_statement_view_model.dart';
+import '../../import_statement/views/import_statement_view.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({required this.viewModel, super.key});
+  const HomeView({
+    required this.viewModel,
+    required this.importViewModel,
+    super.key,
+  });
 
   final HomeViewModel viewModel;
+  final ImportStatementViewModel importViewModel;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -54,9 +61,17 @@ class HomeView extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
                   FilledButton.icon(
-                    onPressed: null,
-                    icon: Icon(Icons.upload_file_outlined),
-                    label: Text('微信账单导入将在下一阶段接入'),
+                    onPressed: () {
+                      importViewModel.reset();
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) =>
+                              ImportStatementView(viewModel: importViewModel),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.upload_file_outlined),
+                    label: const Text('导入微信账单'),
                   ),
                 ],
               ),
